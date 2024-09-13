@@ -45,35 +45,47 @@ const Post = () => {
 
   if (!post) return <div>Loading...</div>;
 
+  // Convert fileUpload path to URL
+  const imageUrl = `http://localhost:5001/${post.fileUpload.replace(/\\/g, '/')}`;
+
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-4xl font-bold text-[#172d13]">{post.title}</h1>
-      <img src={post.fileUpload} alt={post.title} className="w-full h-64 object-cover mt-4" />
-      <div className="mt-4">
-        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.description) }} />
-      </div>
-      <p className="text-gray-600 mt-2">By {post.creator}</p>
-      <div className="mt-4">
-        <button
-          onClick={handleLike}
-          className="bg-[#6bb77b] text-white py-2 px-4 rounded-md shadow-sm"
-        >
-          Like ({post.upvote})
-        </button>
-        <button
-          onClick={handleEdit}
-          className="bg-[#d76f30] text-white py-2 px-4 rounded-md shadow-sm ml-4"
-        >
-          Edit
-        </button>
-        <button
-          onClick={handleDelete}
-          className="bg-red-500 text-white py-2 px-4 rounded-md shadow-sm ml-4"
-        >
-          Delete
-        </button>
-      </div>
+    <div className="container mx-auto p-6 max-w-3xl mt-[80px] min-h-[85vh] ">
+    <h1 className="text-4xl font-bold text-[#172d13] mb-4 text-center">{post.title}</h1>
+    <div className="relative w-full h-64 mb-4">
+      <img
+        src={imageUrl}
+        alt={post.title}
+        className="w-full h-full object-cover rounded-lg shadow-md"
+        onError={(e) => {
+          console.error(`Failed to load image from ${imageUrl}`);
+          e.target.src = '/path/to/your/fallback/image.jpg'; // Path to a fallback image
+        }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-30"></div>
     </div>
+    <div className="text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.description) }} />
+    <p className="text-gray-600 mt-4 text-center">By {post.creator}</p>
+    <div className="flex justify-center space-x-4 mt-6">
+      <button
+        onClick={handleLike}
+        className="bg-[#6bb77b] text-white py-2 px-6 rounded-lg shadow-md hover:bg-[#5a9a6c] transition duration-300"
+      >
+        Like ({post.upvote})
+      </button>
+      <button
+        onClick={handleEdit}
+        className="bg-[#d76f30] text-white py-2 px-6 rounded-lg shadow-md hover:bg-[#b65c20] transition duration-300"
+      >
+        Edit
+      </button>
+      <button
+        onClick={handleDelete}
+        className="bg-red-600 text-white py-2 px-6 rounded-lg shadow-md hover:bg-red-700 transition duration-300"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
   );
 };
 

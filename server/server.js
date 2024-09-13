@@ -3,12 +3,18 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
+import path from 'path';
+import { fileURLToPath } from 'url'; // Import fileURLToPath from 'url'
 
 import blogPosts from "./routes/blogPosts.routes.js";
 
 const app = express();
 
 dotenv.config();
+
+// Get the current directory path
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.use(bodyParser.json({
     limit: "50mb",
@@ -22,7 +28,10 @@ app.use(bodyParser.urlencoded({
 
 app.use(cors());
 
-app.use("/api/blogs" , blogPosts);
+// Serve static files from the 'uploads' directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.use("/api/blogs", blogPosts);
 
 const PORT = process.env.PORT || 6000;
 const DB_CONNECTION = process.env.DATABASE_URL;

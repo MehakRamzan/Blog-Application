@@ -17,15 +17,17 @@ export const getAllBlogPosts = async (req, res) => {
 
 //to create a post
 
+
 export const addBlogPost = async (req, res) => {
-  const { title, description, tags, imageURL, creator } = req.body;
+  const { title, description, tags, creator } = req.body;
+  const imageURL = req.file ? req.file.path : ''; // Get the file path
 
   const createNewPost = new BlogPost({
     title,
     description, // rich text content
     tags,
     fileUpload: imageURL,
-    creator
+    creator,
   });
 
   try {
@@ -35,6 +37,8 @@ export const addBlogPost = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+// Other controller methods remain the same
 
 
 
