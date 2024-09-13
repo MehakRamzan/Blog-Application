@@ -22,9 +22,9 @@ export const addBlogPost = async (req, res) => {
 
   const createNewPost = new BlogPost({
     title,
-    description,
+    description, // rich text content
     tags,
-    fileUpload: imageURL, // Use the imageURL field instead
+    fileUpload: imageURL,
     creator
   });
 
@@ -35,6 +35,7 @@ export const addBlogPost = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
 
 
 // to get single post
@@ -63,7 +64,7 @@ export const updateSingleBlogPost = async (req, res) => {
 
   const updatedBlogPost = {
     title,
-    description,
+    description, // rich text content
     tags,
     fileUpload,
     creator,
@@ -73,6 +74,7 @@ export const updateSingleBlogPost = async (req, res) => {
   await BlogPost.findByIdAndUpdate(id, updatedBlogPost, { new: true });
   res.status(200).json(updatedBlogPost);
 };
+
 
 // to like blog post
 
